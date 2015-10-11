@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=blogc-git-receiver
 PKG_VERSION:=0.1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_LICENSE:=BSD-3-Clause
 PKG_LICENSE_FILES:=LICENSE
 
@@ -37,6 +37,12 @@ endef
 
 MAKE_FLAGS += \
 	CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
+
+define Package/blogc-git-receiver/postinst
+#!/bin/sh
+grep blogc-git-receiver $${IPKG_INSTROOT}/etc/shells || \
+	echo "/usr/bin/blogc-git-receiver" >> $${IPKG_INSTROOT}/etc/shells
+endef
 
 define Package/blogc-git-receiver/install
 	$(INSTALL_DIR) $(1)/usr/bin
